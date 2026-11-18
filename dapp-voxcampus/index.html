@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoxCampus - Papan Aspirasi dan Pengaduan</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Praktikum Blockchain • Solidity + Remix + MetaMask + ethers.js</p>
+      <h1>Vox<span>Campus</span></h1>
+      <p class="tagline">Suara Kampus, Tercatat Permanen.</p>
+      <p class="sub">Papan aspirasi dan pengaduan pseudonim di jaringan Sepolia. Laporan tidak dapat dihapus atau diubah isinya oleh siapa pun, termasuk admin.</p>
+    </header>
+
+    <section class="panel" id="panelKoneksi">
+      <h2><span class="num">1</span> Koneksi Dompet</h2>
+      <button id="connectBtn">Hubungkan MetaMask</button>
+      <dl>
+        <div><dt>Akun</dt><dd id="account">Belum terhubung</dd></div>
+        <div><dt>Jaringan</dt><dd id="network">-</dd></div>
+        <div><dt>Peran</dt><dd id="peran">-</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel" id="panelRingkasan">
+      <h2><span class="num">2</span> Ringkasan Papan</h2>
+      <button id="refreshBtn" class="secondary">Muat Ulang Data</button>
+      <div class="stats">
+        <div class="stat"><span id="totalLaporan">-</span><label>Total laporan</label></div>
+        <div class="stat s-pending"><span id="totalPending">-</span><label>Pending</label></div>
+        <div class="stat s-proses"><span id="totalProses">-</span><label>Diproses</label></div>
+        <div class="stat s-selesai"><span id="totalSelesai">-</span><label>Selesai</label></div>
+      </div>
+      <p class="note"><strong>Admin kontrak:</strong> <span id="adminAddr">-</span></p>
+    </section>
+
+    <section class="panel" id="panelKirim">
+      <h2><span class="num">3</span> Kirim Laporan (Transaksi)</h2>
+      <form id="formLaporan">
+        <label for="kategori">Kategori</label>
+        <select id="kategori">
+          <option value="0">Fasilitas</option>
+          <option value="1">Pungli</option>
+          <option value="2">Akademik</option>
+          <option value="3">Lainnya</option>
+        </select>
+        <label for="isi">Isi laporan <span class="counter" id="counter">0 / 280 byte</span></label>
+        <textarea id="isi" rows="4" placeholder="Tulis laporan secara singkat dan faktual..." required></textarea>
+        <p class="warn">Peringatan: laporan bersifat permanen dan publik. Jangan menulis nama, NIM, nomor telepon, atau data pribadi. Disarankan memakai wallet khusus (bukan wallet utama).</p>
+        <button id="sendBtn" type="submit">Kirim Laporan</button>
+      </form>
+    </section>
+
+    <section class="panel" id="panelPapan">
+      <h2><span class="num">4</span> Papan Transparansi Publik</h2>
+      <div class="filters">
+        <select id="filterKategori" aria-label="Filter kategori">
+          <option value="">Semua kategori</option>
+          <option value="0">Fasilitas</option>
+          <option value="1">Pungli</option>
+          <option value="2">Akademik</option>
+          <option value="3">Lainnya</option>
+        </select>
+        <select id="filterStatus" aria-label="Filter status">
+          <option value="">Semua status</option>
+          <option value="0">Pending</option>
+          <option value="1">Diproses</option>
+          <option value="2">Selesai</option>
+        </select>
+        <label class="check"><input type="checkbox" id="filterSaya" /> Laporan saya saja</label>
+      </div>
+      <div id="papan" class="papan"><p class="note">Belum ada data.</p></div>
+    </section>
+
+    <section class="panel admin" id="panelAdmin" hidden>
+      <h2><span class="num">5</span> Panel Admin (Tindak Lanjut)</h2>
+      <p class="note">Hanya wallet admin yang melihat panel ini. Kontrak tetap menolak pemanggil lain meskipun panel ini dibuka lewat cara apa pun.</p>
+      <form id="formAdmin">
+        <label for="adminId">ID laporan</label>
+        <input id="adminId" type="number" min="0" step="1" required />
+        <label for="adminStatus">Status baru</label>
+        <select id="adminStatus">
+          <option value="1">Diproses</option>
+          <option value="2">Selesai</option>
+          <option value="0">Pending (uji penolakan mundur)</option>
+        </select>
+        <label for="adminCatatan">Catatan tindak lanjut (maks 200 byte)</label>
+        <input id="adminCatatan" type="text" />
+        <button id="adminBtn" type="submit">Ubah Status</button>
+      </form>
+    </section>
+
+    <p id="status" class="status" role="status" aria-live="polite">Isi alamat kontrak pada config.js sebelum mencoba.</p>
+  </main>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
